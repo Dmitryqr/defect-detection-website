@@ -1,1 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📤 Загрузка изображения - DefectDetector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <span>DefectDetector</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="upload.html" class="active"><i class="fas fa-upload"></i> Анализ</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Статистика</a></li>
+            </ul>
+        </nav>
 
+        <div class="upload-container">
+            <div class="upload-header">
+                <h1><i class="fas fa-cloud-upload-alt"></i> Загрузка изображения для анализа</h1>
+                <p>Загрузите фотографию строительной конструкции для обнаружения дефектов</p>
+            </div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">
+                    <i class="fas fa-file-upload"></i>
+                </div>
+                <h3>Перетащите файл сюда</h3>
+                <p>или нажмите для выбора файла</p>
+                <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.bmp" hidden>
+                <button class="btn-select" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-folder-open"></i> Выбрать файл
+                </button>
+                <p class="file-types">Поддерживаемые форматы: JPG, PNG, BMP (макс. 10MB)</p>
+            </div>
+
+            <!-- Предпросмотр -->
+            <div class="preview-container" id="previewContainer" style="display: none;">
+                <h3><i class="fas fa-image"></i> Предпросмотр</h3>
+                <div class="preview-content">
+                    <div class="preview-image">
+                        <img id="previewImage" src="" alt="Предпросмотр">
+                    </div>
+                    <div class="preview-info">
+                        <h4>Информация о файле:</h4>
+                        <div class="info-item">
+                            <span>Имя файла:</span>
+                            <span id="fileName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Размер:</span>
+                            <span id="fileSize">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Тип:</span>
+                            <span id="fileType">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span>Разрешение:</span>
+                            <span id="fileResolution">-</span>
+                        </div>
+
+                        <div class="analysis-options">
+                            <h4><i class="fas fa-sliders-h"></i> Параметры анализа:</h4>
+                            <div class="options-grid">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="detectCracks" checked>
+                                    <span class="checkmark"></span>
+                                    Обнаружение трещин
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="detectCorrosion" checked>
+                                    <span class="checkmark"></span>
+                                    Обнаружение коррозии
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="highlightDefects" checked>
+                                    <span class="checkmark"></span>
+                                    Подсветка дефектов
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="generateReport" checked>
+                                    <span class="checkmark"></span>
+                                    Создать отчет
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="btn-analyze" onclick="analyzeImage()">
+                            <i class="fas fa-play-circle"></i> Начать анализ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Прогресс анализа -->
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <h3><i class="fas fa-spinner fa-spin"></i> Идет анализ...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-steps">
+                    <div class="step active"><i class="fas fa-check"></i> Загрузка</div>
+                    <div class="step"><i class="fas fa-cog"></i> Предобработка</div>
+                    <div class="step"><i class="fas fa-brain"></i> Анализ ИИ</div>
+                    <div class="step"><i class="fas fa-chart-bar"></i> Визуализация</div>
+                </div>
+                <p id="progressText">Подготовка к анализу...</p>
+            </div>
+
+            <!-- Рекомендации -->
+            <div class="tips">
+                <h3><i class="fas fa-lightbulb"></i> Рекомендации для лучшего результата:</h3>
+                <div class="tips-grid">
+                    <div class="tip">
+                        <i class="fas fa-sun"></i>
+                        <p>Используйте хорошее освещение</p>
+                    </div>
+                    <div class="tip">
+                        <i class="fas fa-camera"></i>
+                        <p>Снимайте перпендикулярно поверхности</p>
+                    </div>
+                    <div class="tip">
+                        <i class="fas fa-ruler"></i>
+                        <p>Добавьте объект для масштаба (линейка)</p>
+                    </div>
+                    <div class="tip">
+                        <i class="fas fa-ban"></i>
+                        <p>Избегайте бликов и теней</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
