@@ -1,1 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Результаты анализа - DefectDetector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <span>DefectDetector</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="upload.html"><i class="fas fa-upload"></i> Анализ</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Статистика</a></li>
+            </ul>
+        </nav>
 
+        <div class="results-container">
+            <!-- Заголовок с результатом -->
+            <div class="results-header">
+                <div class="result-status" id="resultStatus">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h1>Анализ завершен</h1>
+                        <p>Изображение успешно проанализировано</p>
+                    </div>
+                </div>
+                <button class="btn-download" onclick="downloadReport()">
+                    <i class="fas fa-download"></i> Скачать отчет
+                </button>
+            </div>
+
+            <!-- Основные результаты -->
+            <div class="main-results">
+                <div class="image-comparison">
+                    <div class="image-box">
+                        <h3><i class="fas fa-image"></i> Оригинал</h3>
+                        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Оригинал" id="originalImage">
+                    </div>
+                    <div class="image-box">
+                        <h3><i class="fas fa-search-plus"></i> Результат анализа</h3>
+                        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Анализ" id="analyzedImage">
+                        <div class="image-overlay">
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <span class="color-box crack-color"></span>
+                                    <span>Трещины (3 шт.)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="color-box corrosion-color"></span>
+                                    <span>Коррозия (2 зоны)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Детали результатов -->
+                <div class="results-details">
+                    <!-- Статистика -->
+                    <div class="stats-grid">
+                        <div class="stat-card crack-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-cracked-egg"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>ТРЕЩИНЫ</h3>
+                                <div class="stat-value">3</div>
+                                <p>обнаружено трещин</p>
+                            </div>
+                        </div>
+                        <div class="stat-card corrosion-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-water"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>КОРРОЗИЯ</h3>
+                                <div class="stat-value">2</div>
+                                <p>зоны коррозии</p>
+                            </div>
+                        </div>
+                        <div class="stat-card area-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-ruler-combined"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>ПЛОЩАДЬ</h3>
+                                <div class="stat-value">15.2 см²</div>
+                                <p>поврежденной площади</p>
+                            </div>
+                        </div>
+                        <div class="stat-card confidence-stat">
+                            <div class="stat-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>ТОЧНОСТЬ</h3>
+                                <div class="stat-value">96.7%</div>
+                                <p>уверенность анализа</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- График -->
+                    <div class="chart-container">
+                        <canvas id="defectsChart"></canvas>
+                    </div>
+
+                    <!-- Список дефектов -->
+                    <div class="defects-list">
+                        <h3><i class="fas fa-list"></i> Обнаруженные дефекты</h3>
+                        <div class="defects-container">
+                            <div class="defect-item crack-defect">
+                                <div class="defect-header">
+                                    <span class="defect-id">#001</span>
+                                    <span class="defect-type">ТРЕЩИНА</span>
+                                    <span class="defect-severity high">КРИТИЧЕСКАЯ</span>
+                                </div>
+                                <div class="defect-details">
+                                    <p><i class="fas fa-ruler"></i> Длина: 24.5 см</p>
+                                    <p><i class="fas fa-arrows-alt-h"></i> Ширина: 0.3 см</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> Координаты: X:120, Y:345</p>
+                                </div>
+                            </div>
+                            <div class="defect-item corrosion-defect">
+                                <div class="defect-header">
+                                    <span class="defect-id">#002</span>
+                                    <span class="defect-type">КОРРОЗИЯ</span>
+                                    <span class="defect-severity medium">СРЕДНЯЯ</span>
+                                </div>
+                                <div class="defect-details">
+                                    <p><i class="fas fa-expand"></i> Площадь: 8.3 см²</p>
+                                    <p><i class="fas fa-tint"></i> Глубина: поверхностная</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> Координаты: X:450, Y:210</p>
+                                </div>
+                            </div>
+                            <!-- Добавьте больше дефектов по необходимости -->
+                        </div>
+                    </div>
+
+                    <!-- Рекомендации -->
+                    <div class="recommendations">
+                        <h3><i class="fas fa-tools"></i> Рекомендации по ремонту</h3>
+                        <div class="recommendation-card critical">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Критические дефекты</h4>
+                            <ul>
+                                <li>Трещина #001 требует немедленного усиления конструкции</li>
+                                <li>Рекомендуется инъектирование эпоксидной смолой</li>
+                            </ul>
+                        </div>
+                        <div class="recommendation-card medium">
+                            <h4><i class="fas fa-clock"></i> Среднесрочные меры</h4>
+                            <ul>
+                                <li>Очистка зон коррозии и антикоррозийная обработка</li>
+                                <li>Установка мониторинга развития трещин</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- История анализов -->
+                    <div class="history">
+                        <h3><i class="fas fa-history"></i> История анализов</h3>
+                        <div class="history-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Дата</th>
+                                        <th>Изображение</th>
+                                        <th>Результат</th>
+                                        <th>Точность</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>15.03.2024</td>
+                                        <td>wall_001.jpg</td>
+                                        <td><span class="badge crack-badge">Трещины</span></td>
+                                        <td>95.2%</td>
+                                        <td><button class="btn-small">Просмотр</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14.03.2024</td>
+                                        <td>beam_003.jpg</td>
+                                        <td><span class="badge corrosion-badge">Коррозия</span></td>
+                                        <td>92.8%</td>
+                                        <td><button class="btn-small">Просмотр</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="window.location.href='upload.html'">
+                    <i class="fas fa-plus"></i> Новый анализ
+                </button>
+                <button class="btn-primary" onclick="printResults()">
+                    <i class="fas fa-print"></i> Распечатать отчет
+                </button>
+                <button class="btn-success" onclick="saveToDatabase()">
+                    <i class="fas fa-save"></i> Сохранить в БД
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Инициализация графика
+        const ctx = document.getElementById('defectsChart').getContext('2d');
+        const defectsChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Трещины', 'Коррозия', 'Норма'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: [
+                        '#ff6b6b',
+                        '#4dabf7',
+                        '#51cf66'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
